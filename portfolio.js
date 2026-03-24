@@ -34,22 +34,15 @@ class Portfolio {
 
   recalcularPatrimonio() {
     let totalActivos = 0;
-    console.log(this.usuario);
-    if (this.usuario.misActivos.length > 0) {
-      for (let activo of this.usuario.misActivos) {
-        const precioActual = this.mercado[activo.idMoneda];
 
     for (let activo of this.usuario.misActivos) {
       const precioActual = this.mercado[activo.idMoneda].precioActual;
 
-        const valorActual = activo.cantidad * precioActual;
-        const valorCompra = activo.cantidad * activo.precioCompra;
+      const valorActual = activo.cantidad * precioActual;
+      const valorCompra = activo.cantidad * activo.precioCompra;
 
-        const ganancia = valorActual - valorCompra;
+      const ganancia = valorActual - valorCompra;
 
-        let tipo = ganancia >= 0 ? "Ganancia" : "Pérdida";
-        let mensaje =
-          activo.idMoneda + ": " + tipo + " de " + ganancia.toFixed(2) + " USD";
       let tipo = ganancia >= 0 ? "Ganancia" : "Pérdida";
       let mensaje =
         activo.idMoneda +
@@ -59,12 +52,9 @@ class Portfolio {
         ganancia.toFixed(2) +
         " USD";
 
-        console.log(mensaje);
+      console.log(mensaje);
 
-        totalActivos += valorActual;
-      }
-    }else{
-      console.log("No tienes activos maquina");
+      totalActivos += valorActual;
     }
 
     const patrimonioTotal = totalActivos + this.usuario.balanceUSD;
@@ -76,16 +66,11 @@ class Portfolio {
 const portfolio = new Portfolio(usuario, mercado);
 
 function actualizarBalance() {
-  document.getElementById("balance").textContent =
+  document.getElementById("balance").innerText =
     "Balance: $" + usuario.balanceUSD.toFixed(2);
 }
 
 function comprarMoneda(moneda) {
-  console.log("aaaaaaaaaaaaaaaa");
-  portfolio.comprar(moneda, 0.1); // cantidad fija
-}
-
-// Mostrar balance inicial
   portfolio.comprar(moneda, 0.1);
 }
 
@@ -102,26 +87,3 @@ document.addEventListener("cambiaPrecios", () => {
 
 // Inicializar
 actualizarBalance();
-
-const btnDoge = document.getElementById("btnDoge");
-const btnBit = document.getElementById("btnBit");
-const btnNeo = document.getElementById("btnNeo");
-const btnShit = document.getElementById("btnShit");
-btnDoge.addEventListener("click", () => {
-  comprarMoneda(0);
-});
-btnBit.addEventListener("click", () => {
-  comprarMoneda(1);
-});
-btnNeo.addEventListener("click", () => {
-  comprarMoneda(2);
-});
-btnShit.addEventListener("click", () => {
-  comprarMoneda(3);
-});
-
-document.addEventListener(
-  "cambiaPrecios",
-  portfolio.recalcularPatrimonio,
-  console.log(portfolio),
-);
