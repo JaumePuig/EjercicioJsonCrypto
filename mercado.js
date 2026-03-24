@@ -47,8 +47,8 @@ class Ticker {
 
   floatingPrices() {
     this.mercado.forEach((moneda) => {
-      var num = Math.floor(Math.random() * 1) + 1; // this will get a number between 1 and 99;
-      num *= Math.round(Math.random()) ? 1 : -1; // this will add minus sign in 50% of cases
+      var num = Math.floor(Math.random() * 1) + 1; 
+      num *= Math.round(Math.random()) ? 1 : -1; 
       moneda.precioActual =
         moneda.precioActual * (1 + num * moneda.volatilidad);
       if (moneda.precioActual <= 0) {
