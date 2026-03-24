@@ -1,4 +1,4 @@
-const mercado = [
+export const mercado = [
   {
     id: 0,
     nombre: "Dogecoin",
@@ -54,12 +54,28 @@ class Ticker {
       if (moneda.precioActual <= 0) {
         moneda.precioActual = 0;
       }
-      console.log(
-        "la moneda " + moneda.nombre + " tiene valor: " + moneda.precioActual,
-      );
       document.dispatchEvent(this.miEvento);
     });
   }
 }
-console.log(mercado);
 const ticker = new Ticker(mercado);
+const tabla = document.getElementById("tablaMercados");
+const celdasMercado = [];
+
+mercado.forEach(element => {
+    let newTr = document.createElement("tr");
+    let newTd1 = document.createElement("td");
+    newTd1.textContent = element.nombre;
+    newTr.appendChild(newTd1);
+    let newTd2 = document.createElement("td");
+    newTd2.textContent = element.precioActual;
+    newTr.appendChild(newTd2);
+    tabla.appendChild(newTr);
+    celdasMercado.push(newTd2);
+});
+
+document.addEventListener("cambiaPrecios", (e) => {
+      for (let i = 0; i < mercado.length; i++) {
+        celdasMercado[i].textContent = mercado[i].precioActual;
+      }
+    });

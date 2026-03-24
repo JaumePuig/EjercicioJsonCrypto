@@ -1,12 +1,7 @@
+import { mercado } from "./mercado.js";
 const usuario = {
-  balanceUSD: 10000,
+  balanceUSD: 100000,
   misActivos: [],
-};
-
-const mercado = {
-  BTC: 35000,
-  ETH: 2000,
-  ADA: 0.5,
 };
 
 class Portfolio {
@@ -16,7 +11,7 @@ class Portfolio {
   }
 
   comprar(idMoneda, cantidad) {
-    const precioActual = this.mercado[idMoneda];
+    const precioActual = this.mercado[idMoneda].precioActual;
     const costoTotal = precioActual * cantidad;
 
     if (this.usuario.balanceUSD >= costoTotal) {
@@ -63,14 +58,27 @@ class Portfolio {
 
 const portfolio = new Portfolio(usuario, mercado);
 
+const btnDoge = document.getElementById("btnDoge");
+btnDoge.addEventListener("click", comprarMoneda(0));
+const btnBit = document.getElementById("btnBit");
+btnBit.addEventListener("click", comprarMoneda(1));
+const btnNeo = document.getElementById("btnNeo");
+btnNeo.addEventListener("click", comprarMoneda(2));
+const btnShit = document.getElementById("btnShit");
+btnShit.addEventListener("click", comprarMoneda(3));
+
 function actualizarBalance() {
   document.getElementById("balance").innerText =
     "Balance: $" + usuario.balanceUSD.toFixed(2);
 }
 
 function comprarMoneda(moneda) {
+  console.log("aaaaaaaaaaaaaaaa");
   portfolio.comprar(moneda, 0.1); // cantidad fija
 }
 
+
 // Mostrar balance inicial
 actualizarBalance();
+
+addEventListener("cambiaPrecios", portfolio.recalcularPatrimonio, console.log(portfolio));
