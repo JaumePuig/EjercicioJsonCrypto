@@ -1,4 +1,5 @@
 import { mercado } from "./mercado.js";
+
 const usuario = {
   balanceUSD: 100000,
   misActivos: [],
@@ -23,7 +24,7 @@ class Portfolio {
         precioCompra: precioActual,
       });
 
-      console.log(" Compra realizada");
+      console.log("Compra realizada");
     } else {
       console.log("Fondos insuficientes");
     }
@@ -35,7 +36,7 @@ class Portfolio {
     let totalActivos = 0;
 
     for (let activo of this.usuario.misActivos) {
-      const precioActual = this.mercado[activo.idMoneda];
+      const precioActual = this.mercado[activo.idMoneda].precioActual;
 
       const valorActual = activo.cantidad * precioActual;
       const valorCompra = activo.cantidad * activo.precioCompra;
@@ -43,7 +44,13 @@ class Portfolio {
       const ganancia = valorActual - valorCompra;
 
       let tipo = ganancia >= 0 ? "Ganancia" : "Pérdida";
-      let mensaje = activo.idMoneda + ": " + tipo + " de " + ganancia.toFixed(2) + " USD";
+      let mensaje =
+        activo.idMoneda +
+        ": " +
+        tipo +
+        " de " +
+        ganancia.toFixed(2) +
+        " USD";
 
       console.log(mensaje);
 
@@ -58,27 +65,25 @@ class Portfolio {
 
 const portfolio = new Portfolio(usuario, mercado);
 
-const btnDoge = document.getElementById("btnDoge");
-btnDoge.addEventListener("click", comprarMoneda(0));
-const btnBit = document.getElementById("btnBit");
-btnBit.addEventListener("click", comprarMoneda(1));
-const btnNeo = document.getElementById("btnNeo");
-btnNeo.addEventListener("click", comprarMoneda(2));
-const btnShit = document.getElementById("btnShit");
-btnShit.addEventListener("click", comprarMoneda(3));
-
 function actualizarBalance() {
   document.getElementById("balance").innerText =
     "Balance: $" + usuario.balanceUSD.toFixed(2);
 }
 
 function comprarMoneda(moneda) {
-  console.log("aaaaaaaaaaaaaaaa");
-  portfolio.comprar(moneda, 0.1); // cantidad fija
+  portfolio.comprar(moneda, 0.1);
 }
 
 
-// Mostrar balance inicial
-actualizarBalance();
+document.getElementById("btnDoge").addEventListener("click", () => comprarMoneda(0));
+document.getElementById("btnBit").addEventListener("click", () => comprarMoneda(1));
+document.getElementById("btnNeo").addEventListener("click", () => comprarMoneda(2));
+document.getElementById("btnShit").addEventListener("click", () => comprarMoneda(3));
 
-addEventListener("cambiaPrecios", portfolio.recalcularPatrimonio, console.log(portfolio));
+// ✅ ESCUCHAR CAMBIO DE PRECIOS
+document.addEventListener("cambiaPrecios", () => {
+  portfolio.recalcularPatrimonio();
+});
+
+// Inicializar
+actualizarBalance();
